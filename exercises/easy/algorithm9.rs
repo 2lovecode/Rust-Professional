@@ -4,9 +4,6 @@
 */
 
 
-use std::cmp::Ord;
-use std::default::Default;
-
 pub struct Heap<T>
 where
     T: Default,
@@ -37,7 +34,34 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.count += 1;
+        self.items.push(value);
+        let idx = self.len();
+        self.bubble_up(idx);
+    }
+
+    fn bubble_up(&mut self, idx: usize) {
+        let mut id = idx;
+        while self.parent_idx(id) > 0 {
+            let pidx = self.parent_idx(id);
+            if (self.comparator)(&self.items[id], &self.items[pidx]) {
+                self.items.swap(id, pidx);
+            }
+            id = pidx;
+        }
+    }
+
+    fn bubble_down(&mut self, idx: usize) {
+        if !self.is_empty() {
+            let mut id = idx;
+            while self.children_present(id) {
+                let smallest_children = self.smallest_child_idx(id);
+                if (self.comparator)(&self.items[smallest_children], &self.items[id]) {
+                    self.items.swap(id, smallest_children);
+                }
+                id = smallest_children;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -57,8 +81,17 @@ where
     }
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
-		0
+        if self.right_child_idx(idx) > self.count {
+            self.left_child_idx(idx)
+        } else {
+            let ldx = self.left_child_idx(idx);
+            let rdx = self.right_child_idx(idx);
+            if (self.comparator)(&self.items[ldx], &self.items[rdx]) {
+                ldx
+            } else {
+                rdx
+            }
+        }
     }
 }
 
@@ -84,10 +117,17 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+        let n = Some(self.items.swap_remove(1));
+        self.count -= 1;
+        self.bubble_down(1);
+        n
     }
 }
+
+
 
 pub struct MinHeap;
 

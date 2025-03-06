@@ -12,10 +12,20 @@
 */
 
 use std::fmt::{self, Display, Formatter};
+use std::collections::HashMap;
 
 pub fn are_anagrams(s1: String, s2: String) -> bool {
     // TODO: Implement the logic to check if two strings are anagrams
-    false // Placeholder return value
+    let mut hmap = HashMap::new();
+
+    s1.to_lowercase().chars().filter(|c| c.is_alphanumeric()).for_each(|c| {
+        *(hmap.entry(c).or_insert(0)) += 1;
+    });
+    s2.to_lowercase().chars().filter(|c| c.is_alphanumeric()).for_each(|c| {
+        *(hmap.entry(c).or_insert(0)) -= 1;
+    });
+
+    hmap.values().all(|&v| v == 0)
 }
 
 #[cfg(test)]

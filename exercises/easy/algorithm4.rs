@@ -50,13 +50,55 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        
+
+        if self.root.is_none() {
+            self.root = Some(Box::new(TreeNode::new(value)));
+            return;
+        } else {
+            let mut current = self.root.as_mut();
+            while let Some(n) = current {
+                if value == n.value {
+                    return;
+                } else if value < n.value {
+                    if n.left.is_none() {
+                        n.insert(value);
+                        return;
+                    } else {
+                        current = n.left.as_mut();
+                    }
+                } else {
+                    if n.right.is_none() {
+                        n.insert(value);
+                        return;
+                    } else {
+                        current = n.right.as_mut();
+                    }
+                }
+            }
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
+        if self.root.is_none() {
+            return false;
+        }
+
+        let mut current = self.root.as_ref();
+
+        while let Some(n) = current {
+           if n.value == value {
+               return true;
+           } else if value < n.value {
+               current = n.left.as_ref();
+           } else {
+               current = n.right.as_ref();
+
+           }
+        }
         //TODO
-        true
+        return false
     }
 }
 
@@ -66,7 +108,17 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        if value < self.value {
+            if self.left.is_none() {
+                self.left = Some(Box::new(TreeNode::new(value)));
+                return;
+            }
+        } else if value > self.value {
+            if self.right.is_none() {
+                self.right = Some(Box::new(TreeNode::new(value)));
+                return;
+            }
+        }
     }
 }
 

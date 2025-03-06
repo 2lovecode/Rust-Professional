@@ -10,10 +10,32 @@
 */
 
 use std::fmt::{self, Display, Formatter};
-
+use std::collections::HashMap;
 pub fn fib(n: i32) -> i32 {
     // TODO: Implement the logic to calculate the nth Fibonacci number using matrix exponentiation
-    0 // Placeholder return value
+    let mut hm = HashMap::<i32, i32>::new();
+    hm.insert(0, 0);
+    hm.insert(1, 1);
+    fib2(n, &mut hm)
+}
+
+pub fn fib2(n: i32, hm: &mut HashMap<i32, i32>) -> i32 {
+    if let Some(&v) = hm.get(&n) {
+        return v;
+    }
+
+    let k1 = n - 1;
+    let k2 = n - 2;
+   
+    let v1 = fib2(k1, hm);
+    
+    let v2 = fib2(k2, hm);
+    
+
+    let v = v1 + v2;
+    hm.insert(n, v);
+
+    return v;
 }
 
 #[cfg(test)]
