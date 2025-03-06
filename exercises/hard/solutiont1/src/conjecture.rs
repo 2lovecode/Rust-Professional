@@ -42,6 +42,7 @@ pub fn goldbach_conjecture() -> String {
 
         current += 1;
     }
+    
     res.join(",")
 }
 
