@@ -1,4 +1,5 @@
-pub fn find_max_prime_factor(mut n: u128) -> u128 {
+pub fn find_max_prime_factor(number: u128) -> u128 {
+    let mut n = number;
     if n == 0 {
         return 0;
     }

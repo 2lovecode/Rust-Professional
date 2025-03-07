@@ -4,4 +4,5 @@
 mod calc_time;
 
 fn main() {
+    println!("{}", calc_time::time_info("2025-02-25"));
 }
